@@ -1,7 +1,7 @@
 corr <- function(directory, threshold = 0) {
 
     all            <- vector("numeric")
-    complete_data  <- complete("specdata")
+    complete_data  <- complete("data")
     threshold_data <- complete_data[complete_data$nobs > threshold,]
 
     for (i in threshold_data$id) {

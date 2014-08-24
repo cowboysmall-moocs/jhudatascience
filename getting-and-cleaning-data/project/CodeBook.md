@@ -89,6 +89,17 @@ The follwoing work was done on the data:
 9. the second set of cleaned data was output to the file './data/cleaned_data2.txt' - to be submitted
 
 
+
+## Data Types
+
+The data types of the selected features can be broken down as follows:
+
+- subject: integer (ranging from 1 to 30)
+- activity: factor (with 6 levels - 'laying', 'sitting', 'standing', 'walking', 'walkingdownstairs', and 'walkingupstairs')
+- all measurements: numeric (double)
+
+
+
 ## Features
 
 The selected features include:
@@ -162,12 +173,4 @@ The selected features include:
 - fbodybodygyrojerkmagmean
 - fbodybodygyrojerkmagstd
 
-
-## Data Types
-
-The data types of the selected features can be broken down as follows:
-
-- subject: integer (ranging from 1 to 30)
-- activity: factor (with 6 levels - 'laying', 'sitting', 'standing', 'walking', 'walkingdownstairs', and 'walkingupstairs')
-- all measurements: numeric (double)
 

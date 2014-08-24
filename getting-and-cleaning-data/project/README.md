@@ -96,6 +96,5 @@ To execute the run_analysis function you need to take the following steps:
         > source('./run_analysis.R')
         > run_analysis()
 
-The run_analysis function can, of course, be run from within RStudio. The only difference 
-to the above descriptions is changing the current directory to the project directory. 
+The run_analysis function can, of course, be run from within RStudio. 
 

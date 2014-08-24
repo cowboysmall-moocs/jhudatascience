@@ -1,10 +1,14 @@
 # Code Book For Cleaned UCI HAR Dataset
 
+
+
 ## Introduction
 
 This project produces a tidy subset of the "Human Activity Recognition Using Smartphones"
 dataset, which is available 
 [here](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
+
+
 
 ## Features
 
@@ -135,4 +139,22 @@ The incuded features:
 - fbodybodygyromagstd
 - fbodybodygyrojerkmagmean
 - fbodybodygyrojerkmagstd
+
+
+
+## Transformations
+
+The follwoing work was done on the data:
+
+1. only measurement variables relating to mean and standard deviation were retained
+
+2. all punctuation was removed from variable names (such as '()')
+
+3. all variable names were made lowercase
+
+4. more meaningful variable names were added where appropriate
+
+5. the subject identifier was included in the data
+
+6. the activity description was included in place of activity identifier
 

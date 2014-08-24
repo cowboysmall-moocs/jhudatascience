@@ -1,8 +1,12 @@
 # Cleaned UCI HAR Dataset
 
+
+
 ## Introduction
 
 This project contains a script used to clean the UCI HAR Dataset
+
+
 
 ## Description
 
@@ -72,3 +76,15 @@ The script takes the following steps:
         long <- melt(table, id.vars = c("subject", "activity"))
         wide <- dcast(long, subject + activity ~ variable, mean)
         write.table(wide, './data/cleaned_data2.txt', row.names = FALSE)
+
+
+
+## Execution
+
+To execute the function within the script you need to be within R - source it and run it:
+
+        > source('./run_analysis.R')
+        > run_analysis()
+
+
+

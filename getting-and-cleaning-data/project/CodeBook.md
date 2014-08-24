@@ -1,4 +1,4 @@
-# Code Book For Cleaned UCI HAR Dataset
+# UCI HAR Dataset Data Cleaning Project Code Book 
 
 
 
@@ -61,8 +61,8 @@ From the original documentation:
 > - angle(): Angle between to vectors.
 
 The features selected for the tidy dataset were a subset consisting of the mean and standard 
-deviation values. Also, activities were given more meaningful names. Please refer to 
-features_info.txt and README.txt for a full description of the original data
+deviation values. Please refer to features_info.txt and README.txt for a full description of 
+the original data
 
 
 
@@ -82,11 +82,16 @@ The follwoing work was done on the data:
 
 6. the activity description was included in place of activity identifier
 
+7. the first set of cleaned data was output to the file './data/cleaned_data1.txt'
+
+8. numeric variables were averaged by subject and activity
+
+9. the second set of cleaned data was output to the file './data/cleaned_data2.txt' - to be submitted
 
 
 ## Features
 
-The incuded features:
+The selected features include:
 
 - subject
 - activity
@@ -160,7 +165,7 @@ The incuded features:
 
 ## Data Types
 
-All data types can be broken down as follows:
+The data types of the selected features can be broken down as follows:
 
 - subject: integer (ranging from 1 to 30)
 - activity: factor (with 6 levels - 'laying', 'sitting', 'standing', 'walking', 'walkingdownstairs', and 'walkingupstairs')

@@ -1,10 +1,10 @@
-# Cleaned UCI HAR Dataset
+# UCI HAR Dataset Data Cleaning Project Description
 
 
 
 ## Introduction
 
-This project contains a script used to clean the UCI HAR Dataset
+This project includes a script containing a function used to clean the UCI HAR Dataset
 
 
 

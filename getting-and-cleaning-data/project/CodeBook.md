@@ -8,10 +8,6 @@ This project produces a tidy subset of the "Human Activity Recognition Using Sma
 dataset, which is available 
 [here](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
 
-
-
-## Features
-
 From the original documentation:
 
 > The experiments have been carried out with a group of 30 volunteers 
@@ -64,6 +60,27 @@ From the original documentation:
 > - bandsEnergy(): Energy of a frequency interval within the 64 bins of the FFT of each window.
 > - angle(): Angle between to vectors.
 
+
+
+## Transformations
+
+The follwoing work was done on the data:
+
+1. only measurement variables relating to mean and standard deviation were retained
+
+2. all punctuation was removed from variable names (such as '()')
+
+3. all variable names were made lowercase
+
+4. more meaningful variable names were added where appropriate
+
+5. the subject identifier was included in the data
+
+6. the activity description was included in place of activity identifier
+
+
+
+## Features
 
 The features selected for the tidy dataset were a subset consisting of the mean and standard 
 deviation values. Also, activities were given more meaningful names. Please refer to 
@@ -140,21 +157,4 @@ The incuded features:
 - fbodybodygyrojerkmagmean
 - fbodybodygyrojerkmagstd
 
-
-
-## Transformations
-
-The follwoing work was done on the data:
-
-1. only measurement variables relating to mean and standard deviation were retained
-
-2. all punctuation was removed from variable names (such as '()')
-
-3. all variable names were made lowercase
-
-4. more meaningful variable names were added where appropriate
-
-5. the subject identifier was included in the data
-
-6. the activity description was included in place of activity identifier
 

@@ -8,6 +8,27 @@ This project contains a script used to clean the UCI HAR Dataset
 
 
 
+## Execution
+
+To execute the run_analysis function you need to take the following steps:
+
+1. clone the repository
+
+        $ git clone git@github.com:cowboysmall/datascience.git
+
+2. cd into the repository, and continue into the project 
+
+        $ cd datascience/getting-and-cleaning-data/project/
+
+3. start up R, and from within R source and run the script:
+
+        > source('./run_analysis.R')
+        > run_analysis()
+
+The run_analysis function can, of course, be run from within RStudio. 
+
+
+
 ## Description
 
 The script takes the following steps:
@@ -77,24 +98,4 @@ The script takes the following steps:
         wide <- dcast(long, subject + activity ~ variable, mean)
         write.table(wide, './data/cleaned_data2.txt', row.names = FALSE)
 
-
-
-## Execution
-
-To execute the run_analysis function you need to take the following steps:
-
-1. clone the repository
-
-        $ git clone git@github.com:cowboysmall/datascience.git
-
-2. cd into the repository, and continue into the project 
-
-        $ cd datascience/getting-and-cleaning-data/project/
-
-3. start up R, and from within R source and run the script:
-
-        > source('./run_analysis.R')
-        > run_analysis()
-
-The run_analysis function can, of course, be run from within RStudio. 
 

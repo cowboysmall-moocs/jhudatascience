@@ -1,4 +1,4 @@
-# Code Book for cleaned UCI HAR Dataset
+# Code Book For Cleaned UCI HAR Dataset
 
 ## Introduction
 

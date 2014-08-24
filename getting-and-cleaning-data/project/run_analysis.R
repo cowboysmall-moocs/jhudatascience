@@ -1,4 +1,9 @@
-library(reshape2)
+if (!require('reshape2')) {
+
+    install.packages('reshape2')
+    require('reshape2')
+}
+
 
 ##
 ## This script does the following:
@@ -11,9 +16,9 @@ library(reshape2)
 
 run_analysis <- function() {
 
-    ## Download the data if it isn't present.
     if (!file.exists('data')) dir.create('data') 
 
+    ## Download the data if it isn't present.
     if (!file.exists('./UCI HAR Dataset')) {
 
         url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip'

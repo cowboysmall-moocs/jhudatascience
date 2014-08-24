@@ -60,6 +60,10 @@ From the original documentation:
 > - bandsEnergy(): Energy of a frequency interval within the 64 bins of the FFT of each window.
 > - angle(): Angle between to vectors.
 
+The features selected for the tidy dataset were a subset consisting of the mean and standard 
+deviation values. Also, activities were given more meaningful names. Please refer to 
+features_info.txt and README.txt for a full description of the original data
+
 
 
 ## Transformations
@@ -81,10 +85,6 @@ The follwoing work was done on the data:
 
 
 ## Features
-
-The features selected for the tidy dataset were a subset consisting of the mean and standard 
-deviation values. Also, activities were given more meaningful names. Please refer to 
-features_info.txt and README.txt for a full description of the original data
 
 The incuded features:
 
@@ -157,4 +157,12 @@ The incuded features:
 - fbodybodygyrojerkmagmean
 - fbodybodygyrojerkmagstd
 
+
+## Data Types
+
+All data types can be broken down as follows:
+
+- subject: integer (ranging from 1 to 30)
+- activity: factor (with 6 levels - 'laying', 'sitting', 'standing', 'walking', 'walkingdownstairs', and 'walkingupstairs')
+- all measurements: numeric (double)
 

@@ -8,7 +8,7 @@ This project includes a script containing a function used to clean the UCI HAR D
 
 
 
-## Execution
+## Setup And Execution
 
 To execute the run_analysis function you need to take the following steps:
 
@@ -25,7 +25,7 @@ To execute the run_analysis function you need to take the following steps:
         > source('./run_analysis.R')
         > run_analysis()
 
-The run_analysis function can, of course, be run from within RStudio. 
+The run_analysis function can, of course, be sourced and run from within RStudio. 
 
 
 

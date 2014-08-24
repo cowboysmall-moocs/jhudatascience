@@ -11,6 +11,7 @@ library(reshape2)
 
 run_analysis <- function() {
 
+    ## Download the data if it isn't present.
     if (!file.exists('data')) dir.create('data') 
 
     if (!file.exists('./UCI HAR Dataset')) {
@@ -23,7 +24,7 @@ run_analysis <- function() {
 
 
 
-
+    ## Merge the training and the test sets to create one data set.
     X_train    <- read.table('./UCI HAR Dataset/train/X_train.txt')
     X_test     <- read.table('./UCI HAR Dataset/test/X_test.txt')
     X_combined <- rbind(X_train, X_test)
@@ -38,31 +39,35 @@ run_analysis <- function() {
 
 
 
+    ## Extract only the measurements on the mean and standard deviation.
+    column_names  <- read.table('./UCI HAR Dataset/features.txt')
+    relevant_cols <- grep('-mean[[:punct:]]|-std[[:punct:]]', column_names[, 2])
+    X_combined    <- X_combined[, relevant_cols]
 
-    column_names      <- read.table('./UCI HAR Dataset/features.txt')
-    relevant_cols     <- grep('-mean[[:punct:]]|-std[[:punct:]]', column_names[, 2])
-    X_combined        <- X_combined[, relevant_cols]
-    names(X_combined) <- tolower(gsub('[[:punct:]]', '', column_names[relevant_cols, 2]))
 
+
+    ## Use descriptive activity names to name the activities in the data set
     activity_labels      <- read.table('./UCI HAR Dataset/activity_labels.txt')
     activity_labels[, 2] <- tolower(gsub('_', '', activity_labels[, 2]))
     y_combined[, 1]      <- activity_labels[y_combined[, 1], 2]
-    names(y_combined)    <- 'activity'
 
+
+
+    ## Appropriately labels the data set with descriptive variable names
+    names(X_combined)       <- tolower(gsub('[[:punct:]]', '', column_names[relevant_cols, 2]))
+    names(y_combined)       <- 'activity'
     names(subject_combined) <- 'subject'
 
 
 
-
+    ## Create original tidy dataset
     combined <- cbind(subject_combined, y_combined, X_combined)
     write.table(combined, './data/cleaned_data1.txt', row.names = FALSE)
 
 
 
-
+    ## Create a second, independent tidy data set with the average of each variable for each activity and each subject.
     long <- melt(table, id.vars = c("subject", "activity"))
     wide <- dcast(long, subject + activity ~ variable, mean)
     write.table(wide, './data/cleaned_data2.txt', row.names = FALSE)
 }
-
-

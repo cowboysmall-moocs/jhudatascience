@@ -1,9 +1,8 @@
-# History files
-.Rhistory
+**/.DS_STORE
 
-# Example code in package build process
-*-Ex.R
+**/.Rhistory
+**/.RData
+**/.Rdata
 
-# R data files from past sessions
-.Rdata
-.RData
+**/*.zip
+**/*.zip

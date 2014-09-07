@@ -12,7 +12,7 @@
 # 
 #   data <- fread("./data/household_power_consumption_truncated.txt", header = TRUE, sep = ";");
 # 
-# 2 - load the file and filter it s you read it:
+# 2 - load the file and filter it as you read it:
 # 
 #   fread("sed -n -e 1p -e 66638,69517p ./data/household_power_consumption.txt", header = TRUE, sep = ";");
 # 

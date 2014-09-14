@@ -1,4 +1,4 @@
-# There are a two options so that you don't load all of the file into memory
+# There are two options to avoid reading all of the file into memory
 # 
 # 1 - pre-process the data with something like the following command:
 # 
@@ -14,7 +14,7 @@
 # 
 # 2 - load the file and filter it as you read it:
 # 
-#   fread("sed -n -e 1p -e 66638,69517p ./data/household_power_consumption.txt", header = TRUE, sep = ";");
+#   data <- fread("sed -n -e 1p -e 66638,69517p ./data/household_power_consumption.txt", header = TRUE, sep = ";");
 # 
 # Note: the pre-processed file is included for convenience.
 
@@ -24,6 +24,7 @@ if (!require('data.table')) {
     require('data.table');
 }
 
+# data <- fread("./data/household_power_consumption_truncated.txt", header = TRUE, sep = ";");
 data <- fread("sed -n -e 1p -e 66638,69517p ./data/household_power_consumption.txt", header = TRUE, sep = ";");
 
 png(file = "plot1.png", width = 480, height = 480);

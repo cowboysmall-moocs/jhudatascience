@@ -1,11 +1,5 @@
----
-title: "Reproducible Research: Peer Assessment 2"
-output: 
-  html_document:
-    keep_md: true
----
 
-# Analyzing Severe Weather Events
+# Analyzing Severe Weather Events In The United States
 
 
 
@@ -79,11 +73,22 @@ convert the event type column to a factor.
 
 ```
 
-Taking a look at the cost data, we see it is split into two - amount and exponent. Because of this, 
-for the purpose of facilitating cost analysis, the two columns should be combined into a total, 
-after converting the exponent into a numeric value. To achieve this I provided a function (see below).
+We see that the casualty data is split across two columns - fatalities and injuries. Because of this, for 
+the purpose of facilitating casualty analysis, I will add a column that combines the two columns into a 
+total.
 
-```{r cleandata, cache=TRUE}
+```{r cleancasualties, cache=TRUE}
+
+    storm_data$casualties   <- storm_data$fatalities + storm_data$injuries;
+
+```
+
+And taking a look at the cost data, we see each cost category is split into two - amount and exponent. 
+Because of this, for the purpose of facilitating cost analysis, the two columns will be combined into 
+a total, after converting the exponent into a numeric value. To achieve this we make use of a custom 
+function (see below).
+
+```{r cleandamage, cache=TRUE}
 
     clean_numeric_data <- function(data) {
 
@@ -142,13 +147,25 @@ We can see the top five severe weather event causes of fatalities above.
 
 ```
 
-And we can see the top five severe weather event causes of injuries above. Next we plot both of the above.
+And we can see the top five severe weather event causes of injuries above. 
 
-```{r plotcasualties, cache=TRUE, fig.width=9, fig.height=4.5}
+```{r summarizecasualties, cache=TRUE}
+
+    casualties_long <- melt(storm_data, id.vars = "evtype", measure.vars = "casualties", na.rm = TRUE);
+    casualties_wide <- dcast(casualties_long, evtype ~ variable, sum);
+    casualties      <- casualties_wide[order(casualties_wide$casualties, decreasing = TRUE), ][1:5, ];
+
+    casualties;
+
+```
+
+And we can see the top five severe weather event causes of casualties above. Next we plot all of the above.
+
+```{r plotcasualties, cache=TRUE, fig.width=9, fig.height=9}
 
     colors <- c('white', 'lightblue', 'pink', 'lightcyan', 'plum');
 
-    par(mfrow = c(1, 2));
+    par(mfrow = c(2, 2));
 
     fatalities_plot <- barplot(
         fatalities$fatalities,
@@ -165,6 +182,22 @@ And we can see the top five severe weather event causes of injuries above. Next 
     );
     text(injuries_plot, par('usr')[3], labels = injuries$evtype, srt = 45, adj = c(1.1, 1.1), xpd = TRUE, cex = .75);
     axis(2);
+
+    casualties_plot <- barplot(
+        casualties$casualties,
+        main = 'Casualties By Event Type',
+        col = colors
+    );
+    text(casualties_plot, par('usr')[3], labels = casualties$evtype, srt = 45, adj = c(1.1, 1.1), xpd = TRUE, cex = .75);
+    axis(2);
+
+    casualties_pie <- pie(
+        casualties$casualties, 
+        labels = casualties$evtype, 
+        main = 'Casualties By Event Type',
+        cex = .75,
+        col = colors
+    );
 
 ```
 
@@ -261,9 +294,9 @@ From the above data analysis we can see that:
 
 1. Tornados are most harmful with respect to population health with a total of `r format(fatalities[1, 2], scientific = FALSE)` 
 fatalities and `r format(injuries[1, 2], scientific = FALSE)` injuries
-2. Floods have the greatest economic consequences in respect of damage to property with a total of 
+2. Floods have the greatest economic consequences in respect of damage to property with a total cost of 
 $`r format(propdmg[1, 2], digits = 2, big.mark = ',', decimal.mark = '.', scientific = FALSE)`
-3. Droughts have the greatest economic consequences in respect of damage to crops with a total of 
+3. Droughts have the greatest economic consequences in respect of damage to crops with a total cost of 
 $`r format(cropdmg[1, 2], digits = 2, big.mark = ',', decimal.mark = '.', scientific = FALSE)`
 
 

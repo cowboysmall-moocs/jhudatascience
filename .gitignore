@@ -5,4 +5,10 @@
 **/.Rdata
 
 **/*.zip
-**/*.zip
+**/*.gz
+**/*.bz2
+
+**/*cache
+**/*files
+**/*figure
+**/*fig

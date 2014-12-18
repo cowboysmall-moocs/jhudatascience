@@ -1,0 +1,157 @@
+---
+title: 'Motor Trend: an analysis of the factors that influence MPG'
+author: "Jerry Kiely"
+date: "16 December 2014"
+output: pdf_document
+---
+
+```{r, echo=FALSE}
+
+    library(datasets);
+    library(ggplot2);
+
+```
+
+## The Executive Summary
+
+In this article we will examine some statistics relating to a set of cars to see if we can make 
+predictions about fuel consumption (MPG). We will attempt to answer the following questions:
+
+* Is an automatic or manual transmission better for MPG
+* Quantify the MPG difference between automatic and manual transmissions
+
+and then we shall perform some analysis to see if we can find better predictors of MPG.
+
+## The Data
+
+First a word about the data we shall use:
+
+> The data was extracted from the 1974 _Motor Trend_ US magazine,
+> and comprises fuel consumption and 10 aspects of automobile design
+> and performance for 32 automobiles (1973-74 models).
+
+And a brief description of the data:
+
+| Name  | Description                              |
+|-------|------------------------------------------|
+| mpg   | Miles/(US) gallon                        |
+| cyl   | Number of cylinders                      |
+| disp  | Displacement (cu.in.)                    |
+| hp    | Gross horsepower                         |
+| drat  | Rear axle ratio                          |
+| wt    | Weight (lb/1000)                         |
+| qsec  | 1/4 mile time                            |
+| vs    | V/S                                      |
+| am    | Transmission (0 = automatic, 1 = manual) |
+| gear  | Number of forward gears                  |
+| carb  | Number of carburetors                    |
+
+Now lets load the data, and convert the predictor of interest - am - into a factor:
+
+```{r load_data, cache=TRUE}
+
+    data(mtcars);
+    mtcars$am <- as.factor(mtcars$am);
+
+```
+Next lets plot the data to get a feel for the it. We'll use a boxplot for this purpose:
+
+```{r, box_plot, fig.width=6, fig.height=4.5, cache=TRUE}
+
+    boxplot(mpg ~ am, mtcars, names = c('Automatic', 'Manual'), horizontal = TRUE);
+
+```
+
+As you can see from the above boxplot, it would seem that cars with manual transmission 
+out-perform cars with automatic transmission in terms of fuel consumption. In the next 
+section we shall try to quantify this, and then see if we can build a better model for 
+predicting fuel consumption.
+
+## The Analysis
+
+Lets fit a model to the data, with mpg as the dependent variable and am as the explanatory 
+variable:
+
+```{r model1, cache=TRUE}
+
+    fit1 <- lm(mpg ~ am, mtcars);
+    sum1 <- summary(fit1);
+    sum1;
+
+```
+
+From the above summary we can see that the difference between the means of mpg for cars with 
+automatic and manual transmissions is `r fit1$coefficients[2]`. This difference is quite 
+significant, and is consistent with what we saw in the boxplot above. Lets plot some diagnostics 
+to get a feel for how well the model is doing:
+
+```{r diagnostics1, fig.width=6, fig.height=6}
+
+    par(mfrow = c(2, 2));
+    plot(fit1);
+
+```
+
+The diagnostics look pretty decent, especially the normal q-q plot which measures the normality of 
+the residuals. Lets construct a confidence interval for the difference in means:
+
+```{r ci1, cache=TRUE}
+
+    coef <- sum1$coefficients;
+    ci1  <- coef[2,1] + c(-1, 1) * qt(.975, df = fit1$df) * coef[2,2];
+    ci1;
+
+```
+
+We are 95% confident that the difference in fuel consumption lies between `r ci1[1]` and 
+`r ci1[2]`. Looking back at the values of $R^2$ (`r sum1$r.squared`) and adjusted $R^2$ 
+(`r sum1$adj.r.squared`) in the above model summary, it seems the variance in mpg is not well 
+predicted by am. Perhaps we can do better:
+
+```{r aov1, cache=TRUE}
+
+    aov_full <- aov(mpg ~ ., mtcars[, 1:11]);
+    sum_full <- summary(aov_full);
+    sum_full;
+
+```
+
+Looking at the output above, it seems that the three most relevant variables when it comes to 
+predicting fuel consumption are cyl (Number of Cylinders), disp (Displacement), and wt (Weight). 
+Lets fit a model using these variables and see what the resulting $R^2$ and adjusted $R^2$ 
+values are:
+
+```{r model2, cache=TRUE}
+
+    fit2 <- lm(mpg ~ cyl + disp + wt, mtcars);
+    sum2 <- summary(fit2);
+    sum2;
+
+```
+
+The new value of $R^2$ (`r sum2$r.squared`) and adjusted $R^2$ (`r sum2$adj.r.squared`) are 
+greater than the previous, suggesting the new model is a better predictor of fuel consumption. 
+Once again, lets plot some diagnostics of the new model to get a feel for it's performance: 
+
+```{r diagnostics2, fig.width=6, fig.height=6}
+
+    par(mfrow = c(2, 2));
+    plot(fit2);
+
+```
+
+All the above plots look good - in particular the plot of residuals vs leverage would indicate 
+there are no outliers with either high influence or leverage in the data. The residuals vs fitted 
+plot looks reasonably uniform. The normal q-q plot would imply the residuals are normally 
+distributed (except for at the right tail). All in all the model looks pretty good.
+
+## The Conclusion
+
+We have shown that manual transmissions are better than automatic in terms of fuel consumption. We 
+quantified this difference by fitting a linear regression model and taking the relevant coefficient. 
+We provided a 95% confidence interval for this difference. We analyzed the model with the aid of some 
+diagnostic plots, and by considering the value of both $R^2$ and adjusted $R^2$, and decided to try 
+for a better model. We analyzed the covariance of variables (ANOVA) and selected the three variables 
+that were most related to mpg. We then constructed another model with these variables and saw that 
+both $R^2$ and adjusted $R^2$ were greatly improved, and hence the model was a better predictor of 
+fuel consumption.

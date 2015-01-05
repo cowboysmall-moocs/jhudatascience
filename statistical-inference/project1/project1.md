@@ -1,59 +1,8 @@
----
-title: "A simulation exercise."
-author: "Jerry Kiely"
-date: "11 November 2014"
-output:
-  html_document:
-    keep_md: yes
-    theme: cerulean
-  pdf_document: null
----
+# A simulation exercise.
+Jerry Kiely  
+11 November 2014  
 
-```{r echo=FALSE}
 
-    library(ggplot2);
-    library(grid);
-
-    multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
-
-        # Make a list from the ... arguments and plotlist
-        plots <- c(list(...), plotlist)
-
-        numPlots = length(plots)
-
-        # If layout is NULL, then use 'cols' to determine layout
-        if (is.null(layout)) {
-
-            # Make the panel
-            # ncol: Number of columns of plots
-            # nrow: Number of rows needed, calculated from # of cols
-            layout <- matrix(seq(1, cols * ceiling(numPlots / cols)),
-            ncol = cols, nrow = ceiling(numPlots / cols))
-        }
-
-        if (numPlots==1) {
-
-            print(plots[[1]])
-
-        } else {
-
-            # Set up the page
-            grid.newpage()
-            pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-
-            # Make each plot, in the correct location
-            for (i in 1:numPlots) {
-    
-                # Get the i,j matrix positions of the regions that contain this subplot
-                matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-
-                print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                layout.pos.col = matchidx$col))
-            }
-        }
-    }
-
-```
 
 ## The Introduction
 
@@ -75,20 +24,19 @@ both a set of means of these samples, and a normalized set of means of these sam
 these datasets to see if they are consistent with what the CLT predicts. First we define the 
 population parameters of the underlying distribution:
 
-```{r population_parameters}
 
+```r
     lambda    <- 0.2;
     mean      <- 1 / lambda;
     var       <- 1 / lambda^2;
     sd        <- 1 / lambda;
-
 ```
 
 Next we set up the parameters of the simulation, our normalization function, and generate our simulated 
 samples:
 
-```{r simulation_parameters}
 
+```r
     n         <- 40;
     count     <- 50000;
 
@@ -101,7 +49,6 @@ samples:
     samples   <- matrix(rexp(count * n, rate = lambda), nrow = count, ncol = n);
     means     <- data.frame(x = apply(samples, 1, mean));
     norms     <- data.frame(x = apply(samples, 1, normalize));
-
 ```
 
 ## The Analysis
@@ -109,25 +56,57 @@ samples:
 Before we visualize the results of the simulation, we summarize the results - we compare the mean and the 
 standard deviation of the simulation with the theoretical mean and standard deviation:
 
-```{r summarize}
 
+```r
     values            <- c(mean(means$x), var(means$x), sd(means$x), mean_s, var_s, sd_s);
     compare           <- matrix(values, nrow = 3, ncol = 2, byrow = FALSE);
     colnames(compare) <- c('simulated', 'theoretical');
     rownames(compare) <- c('mean', 'variance', 'standard deviation');
 
     compare;
-    summary(means);
-    summary(norms);
+```
 
+```
+##                    simulated theoretical
+## mean               5.0045121   5.0000000
+## variance           0.6330259   0.6250000
+## standard deviation 0.7956292   0.7905694
+```
+
+```r
+    summary(means);
+```
+
+```
+##        x        
+##  Min.   :2.455  
+##  1st Qu.:4.449  
+##  Median :4.962  
+##  Mean   :5.005  
+##  3rd Qu.:5.517  
+##  Max.   :9.321
+```
+
+```r
+    summary(norms);
+```
+
+```
+##        x            
+##  Min.   :-3.219743  
+##  1st Qu.:-0.696393  
+##  Median :-0.048062  
+##  Mean   : 0.005707  
+##  3rd Qu.: 0.653416  
+##  Max.   : 5.465812
 ```
 
 The simulated statistics agree with the throretical statistics to two or more decimal places. Next we plot 
 the results of the simulation - the means and the normed means - side by side. We use a histogram, and 
 overlay a density curve for each distribution to emphasize the shape of the curve:
 
-```{r histogram, fig.width=9, fig.height=4.5}
 
+```r
     plot1 <- ggplot(data = means, aes(x = x));
     plot1 <- plot1 + geom_histogram(aes(y = ..density..), 
                                     binwidth = 0.2, color = 'black', fill = 'white');
@@ -145,14 +124,15 @@ overlay a density curve for each distribution to emphasize the shape of the curv
     plot2 <- plot2 + ggtitle("Norms");
 
     multiplot(plot1, plot2, cols = 2);
-
 ```
+
+![](project1_files/figure-html/histogram-1.png) 
 
 Visually alone the plots both look normal, as we would expect from the CLT. Next we generate 
 a qqplot of both datasets to see how they differ from the standard normal:
 
-```{r normal, fig.width=9, fig.height=4.5}
 
+```r
     par(mfrow = c(1, 2));
 
     qqnorm(means$x, pch = '.', main = "Normal Q-Q Plot (means)");
@@ -160,18 +140,20 @@ a qqplot of both datasets to see how they differ from the standard normal:
 
     qqnorm(norms$x, pch = '.', main = "Normal Q-Q Plot (norms)");
     qqline(norms$x);
-
 ```
+
+![](project1_files/figure-html/normal-1.png) 
 
 The datasets agree well with the standard normal, deviating slightly in the tails - which is what we 
 might expect (the sample sizes are significantly smaller than the population, and hence we would expect 
 the tails to differ). For reference, a plot of the original exponential distribution is presented below:
 
-```{r population, fig.width=9, fig.height=4.5}
 
+```r
     population <- rexp(50000, rate = lambda);
     hist(population, breaks = 60);
-
 ```
+
+![](project1_files/figure-html/population-1.png) 
 
 As you can see it is right skewed, and does not resemble the sampling distributions above.

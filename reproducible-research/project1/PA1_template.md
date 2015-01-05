@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
@@ -17,13 +12,25 @@ First I loaded the required libraries, then unzipped the archive (if it wasn't a
         install.packages('plyr');
         require('plyr');
     }
+```
 
+```
+## Loading required package: plyr
+```
+
+```r
     if (!require('reshape2')) {
 
         install.packages('reshape2');
         require('reshape2');
     }
+```
 
+```
+## Loading required package: reshape2
+```
+
+```r
     if (!file.exists('activity.csv')) {
 
         unzip('./activity.zip', exdir = '.');
@@ -49,7 +56,7 @@ Then I plotted a histogram of the dataset, to get an idea of how the steps per d
     );
 ```
 
-![plot of chunk activity_date_hist](figure/activity_date_hist-1.png) 
+![](PA1_template_files/figure-html/activity_date_hist-1.png) 
 
 I calculated the mean and median.
 
@@ -81,7 +88,7 @@ Then I plotted a timeseries of the dataset.
     );
 ```
 
-![plot of chunk plot_interval](figure/plot_interval-1.png) 
+![](PA1_template_files/figure-html/plot_interval-1.png) 
 
 I calculated the max interval value across all days.
 
@@ -143,7 +150,7 @@ Once again I plotted a histogram - this time of the new dataset.
     );
 ```
 
-![plot of chunk cleaned_hist](figure/cleaned_hist-1.png) 
+![](PA1_template_files/figure-html/cleaned_hist-1.png) 
 
 And I calculated the mean and median of the new dataset.
 
@@ -203,7 +210,7 @@ I then constructed plots for Weekdays and Weekends.
     );
 ```
 
-![plot of chunk plot_cleaned_weekend](figure/plot_cleaned_weekend-1.png) 
+![](PA1_template_files/figure-html/plot_cleaned_weekend-1.png) 
 
 I calculated the max, mean, and median values across intervals for weekdays and weekends.
 
@@ -222,6 +229,6 @@ The weekday maximum was 230.3556 and the weekend maximum
 was 166.625. The weekday mean was 
 35.60864 and the weekend mean was 42.36458.
 The weekday median was 25.81111 and the weekend median 
-was 32.3125. There seems to be more activity during the week as you would
+was 32.3125. There seems to be more activity during the weekend as you would
 expect (people work during the week), but both weekend and weekdays follow similiar patterns - most activity 
 between 800 and around 2100. 

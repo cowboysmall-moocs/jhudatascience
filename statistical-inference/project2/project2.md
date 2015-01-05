@@ -1,24 +1,8 @@
----
-title: "The Effect of Vitamin C on Tooth Growth in Guinea Pigs"
-author: "Jerry Kiely"
-date: "11 November 2014"
-output:
-  html_document:
-    keep_md: yes
-    theme: cerulean
-  pdf_document: null
----
+# The Effect of Vitamin C on Tooth Growth in Guinea Pigs
+Jerry Kiely  
+11 November 2014  
 
-```{r echo=FALSE}
 
-    library(ggplot2);
-    #library(grid);
-    library(datasets);
-
-    data(ToothGrowth);
-    ToothGrowth$dose <- as.factor(ToothGrowth$dose);
-
-```
 
 
 ## The Introduction
@@ -36,41 +20,60 @@ the different delivery methods across dosages.
 
 Lets take a look at the data:
 
-```{r raw_data1, cache=TRUE}
 
+```r
     head(ToothGrowth);
+```
 
+```
+##    len supp dose
+## 1  4.2   VC  0.5
+## 2 11.5   VC  0.5
+## 3  7.3   VC  0.5
+## 4  5.8   VC  0.5
+## 5  6.4   VC  0.5
+## 6 10.0   VC  0.5
 ```
 
 and now lets take a look at the means of the data, grouped by dose and supp:
 
-```{r raw_data2, cache=TRUE}
 
+```r
     aggregate(len ~ dose + supp, ToothGrowth, mean);
+```
 
+```
+##   dose supp   len
+## 1  0.5   OJ 13.23
+## 2    1   OJ 22.70
+## 3    2   OJ 26.06
+## 4  0.5   VC  7.98
+## 5    1   VC 16.77
+## 6    2   VC 26.14
 ```
 
 We can see, within dosages, and with the exception of 2.0 dosage, that the means vary. Lets illustrate this 
 with some visualizations:
 
-```{r barplots, fig.width=9, fig.height=4.5, cache=TRUE}
 
+```r
     plot <- ggplot(ToothGrowth, aes(x = supp, y = len, fill = supp));
     plot <- plot + geom_boxplot();
     plot <- plot + facet_grid(~ dose);
     plot <- plot + xlab("delivery");
     plot <- plot + ylab("tooth length");
     plot;
-
 ```
+
+![](project2_files/figure-html/barplots-1.png) 
 
 from looking at the boxplots it's clear that dosage 0.5 and 1.0 have different medians for the different 
 deliveries. On the other hand, there doesn't seem to be a difference between the medians of the deliveries 
 for dosage 2.0. Lets take a look at the confidence intervals for the different means across dosage and 
 delivery:
 
-```{r ci_means, fig.width=9, fig.height=4.5, cache=TRUE}
 
+```r
     conf.int <- function(x) {
         n    = length(x);
         mean = mean(x);
@@ -91,8 +94,9 @@ delivery:
     plot <- plot + xlab("delivery");
     plot <- plot + ylab("mean tooth length");
     plot;
-
 ```
+
+![](project2_files/figure-html/ci_means-1.png) 
 
 this shows that the deliveries of both dosage 0.5 and 1.0 have different means - even their confidence 
 intervals don't overlap - but the means of the deliveries for dosage 2.0 appear to be the same.
@@ -112,8 +116,8 @@ we assume the samples are independent, and that the subjects are randomly assign
 each sample is less than 10% of the size of the population, we have met the necessary conditions to perform 
 our hypothesis tests. First we prepare our data:
 
-```{r test_data, cache=TRUE}
 
+```r
     dose_0.5    <- subset(ToothGrowth, dose == 0.5);
     dose_1.0    <- subset(ToothGrowth, dose == 1.0);
     dose_2.0    <- subset(ToothGrowth, dose == 2.0);
@@ -125,57 +129,94 @@ our hypothesis tests. First we prepare our data:
     dose_0.5_OJ <- subset(dose_0.5, supp == 'OJ');
     dose_1.0_OJ <- subset(dose_1.0, supp == 'OJ');
     dose_2.0_OJ <- subset(dose_2.0, supp == 'OJ');
-
 ```
 
 then we run our tests. We note that the data isn't paired. Also from looking at the boxplots it looks as if 
 the samples have different variances - in fact, when in doubt, we should err on the side of unequal variances.
 
-```{r hypothesis_tests, cache=TRUE}
 
+```r
     dose_0.5_test <- t.test(dose_0.5_OJ$len, dose_0.5_VC$len);
     dose_1.0_test <- t.test(dose_1.0_OJ$len, dose_1.0_VC$len);
     dose_2.0_test <- t.test(dose_2.0_OJ$len, dose_2.0_VC$len);
-
 ```
 
 the first test looks at the difference between the two delivery methods across the 0.5 dosage:
 
-```{r hypothesis_test1, cache=TRUE}
 
+```r
     dose_0.5_test;
-
 ```
 
-with a p-value of `r dose_0.5_test$p.value` we reject the null hypothesis that the true difference in means 
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  dose_0.5_OJ$len and dose_0.5_VC$len
+## t = 3.1697, df = 14.969, p-value = 0.006359
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  1.719057 8.780943
+## sample estimates:
+## mean of x mean of y 
+##     13.23      7.98
+```
+
+with a p-value of 0.0063586 we reject the null hypothesis that the true difference in means 
 is equal to zero at the 5% significance level. Looking at the associated confidence interval 
-(`r dose_0.5_test$conf.int`) we see it doesn't include 0, which is what we would expect at that p-value. The 
+(1.7190573, 8.7809427) we see it doesn't include 0, which is what we would expect at that p-value. The 
 next test looks at the difference between the two delivery methods across the 1.0 dosage:
 
-```{r hypothesis_test2, cache=TRUE}
 
+```r
     dose_1.0_test;
-
 ```
 
-with a p-value of `r dose_1.0_test$p.value` we reject the null hypothesis that the true difference in means 
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  dose_1.0_OJ$len and dose_1.0_VC$len
+## t = 4.0328, df = 15.358, p-value = 0.001038
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  2.802148 9.057852
+## sample estimates:
+## mean of x mean of y 
+##     22.70     16.77
+```
+
+with a p-value of 0.0010384 we reject the null hypothesis that the true difference in means 
 is equal to zero at the 5% significance level. Looking at the associated confidence interval 
-(`r dose_1.0_test$conf.int`) we see it doesn't include 0, which is what we would expect at that p-value. The 
+(2.8021482, 9.0578518) we see it doesn't include 0, which is what we would expect at that p-value. The 
 next test looks at the difference between the two delivery methods across the 2.0 dosage:
 
-```{r hypothesis_test3, cache=TRUE}
 
+```r
     dose_2.0_test;
-
 ```
 
-with a p-value of `r dose_2.0_test$p.value` we fail to reject the null hypothesis that the true difference 
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  dose_2.0_OJ$len and dose_2.0_VC$len
+## t = -0.0461, df = 14.04, p-value = 0.9639
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -3.79807  3.63807
+## sample estimates:
+## mean of x mean of y 
+##     26.06     26.14
+```
+
+with a p-value of 0.9638516 we fail to reject the null hypothesis that the true difference 
 in means is equal to zero at the 5% significance level. Looking at the associated confidence interval 
-(`r dose_2.0_test$conf.int`) we see it includes 0, which is what we would expect at that p-value. Lets 
+(-3.7980705, 3.6380705) we see it includes 0, which is what we would expect at that p-value. Lets 
 visualize the confidence intervals:
 
-```{r ci_differences, fig.width=9, fig.height=4.5, cache=TRUE}
 
+```r
     dose_0.5_CI <- dose_0.5_test$conf.int;
     dose_1.0_CI <- dose_1.0_test$conf.int;
     dose_2.0_CI <- dose_2.0_test$conf.int;
@@ -202,8 +243,9 @@ visualize the confidence intervals:
     plot <- plot + xlab("delivery");
     plot <- plot + ylab("difference in mean tooth length");
     plot;
-
 ```
+
+![](project2_files/figure-html/ci_differences-1.png) 
 
 
 ## The Conclusion

@@ -1,7 +1,11 @@
-
-# Analyzing Severe Weather Events In The United States
-
-
+---
+title: "Analyzing Severe Weather Events In The United States"
+output:
+  html_document:
+    keep_md: yes
+    theme: cerulean
+  pdf_document: null
+---
 
 ## Synopsis
 

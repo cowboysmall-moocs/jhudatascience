@@ -1,8 +1,10 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
+title: "Reproducible Research"
+output:
   html_document:
-    keep_md: true
+    keep_md: yes
+    theme: cerulean
+  pdf_document: null
 ---
 
 
@@ -190,10 +192,10 @@ I calculated the max, mean, and median values across intervals for weekdays and 
 
 ```
 
-The weekday maximum was `r format(max_weekday_steps, scientific = FALSE)` and the weekend maximum 
-was `r format(max_weekend_steps, scientific = FALSE)`. The weekday mean was 
+The weekday maximum was `r format(weekday_max, scientific = FALSE)` and the weekend maximum 
+was `r format(weekend_max, scientific = FALSE)`. The weekday mean was 
 `r format(weekday_mean, scientific = FALSE)` and the weekend mean was `r format(weekend_mean, scientific = FALSE)`.
 The weekday median was `r format(weekday_median, scientific = FALSE)` and the weekend median 
-was `r format(weekend_median, scientific = FALSE)`. There seems to be more activity during the week as you would
+was `r format(weekend_median, scientific = FALSE)`. There seems to be more activity during the weekend as you would
 expect (people work during the week), but both weekend and weekdays follow similiar patterns - most activity 
 between 800 and around 2100. 

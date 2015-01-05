@@ -1,10 +1,5 @@
 # Analyzing Severe Weather Events In The United States
 
-
-# 
-
-
-
 ## Synopsis
 
 
@@ -147,11 +142,11 @@ injuries by event type, and in both cases we retain only the top 5 rows.
 
 ```
 ##             evtype fatalities
-## 834        TORNADO       5633
-## 130 EXCESSIVE HEAT       1903
-## 153    FLASH FLOOD        978
-## 275           HEAT        937
-## 464      LIGHTNING        816
+## 830        TORNADO       5633
+## 123 EXCESSIVE HEAT       1903
+## 147    FLASH FLOOD        978
+## 269           HEAT        937
+## 452      LIGHTNING        816
 ```
 
 We can see the top five severe weather event causes of fatalities above.
@@ -167,11 +162,11 @@ We can see the top five severe weather event causes of fatalities above.
 
 ```
 ##             evtype injuries
-## 834        TORNADO    91346
-## 856      TSTM WIND     6957
-## 170          FLOOD     6789
-## 130 EXCESSIVE HEAT     6525
-## 464      LIGHTNING     5230
+## 830        TORNADO    91346
+## 854      TSTM WIND     6957
+## 164          FLOOD     6789
+## 123 EXCESSIVE HEAT     6525
+## 452      LIGHTNING     5230
 ```
 
 And we can see the top five severe weather event causes of injuries above. 
@@ -187,11 +182,11 @@ And we can see the top five severe weather event causes of injuries above.
 
 ```
 ##             evtype casualties
-## 834        TORNADO      96979
-## 130 EXCESSIVE HEAT       8428
-## 856      TSTM WIND       7461
-## 170          FLOOD       7259
-## 464      LIGHTNING       6046
+## 830        TORNADO      96979
+## 123 EXCESSIVE HEAT       8428
+## 854      TSTM WIND       7461
+## 164          FLOOD       7259
+## 452      LIGHTNING       6046
 ```
 
 And we can see the top five severe weather event causes of casualties above. Next we plot all of the above.
@@ -257,11 +252,11 @@ damage done to property, crops, and both by event type, and in both cases we ret
 
 ```
 ##                evtype      propdmg
-## 170             FLOOD 144657709807
-## 411 HURRICANE/TYPHOON  69305840000
-## 834           TORNADO  56947380676
-## 670       STORM SURGE  43323536000
-## 153       FLASH FLOOD  16822673978
+## 164             FLOOD 144657709807
+## 406 HURRICANE/TYPHOON  69305840000
+## 830           TORNADO  56947380676
+## 666       STORM SURGE  43323536000
+## 147       FLASH FLOOD  16822673978
 ```
 
 We can see the top five severe weather events ordered by cost of property damage above.
@@ -277,11 +272,11 @@ We can see the top five severe weather events ordered by cost of property damage
 
 ```
 ##          evtype     cropdmg
-## 95      DROUGHT 13972566000
-## 170       FLOOD  5661968450
-## 590 RIVER FLOOD  5029459000
-## 427   ICE STORM  5022113500
-## 244        HAIL  3025954473
+## 88      DROUGHT 13972566000
+## 164       FLOOD  5661968450
+## 586 RIVER FLOOD  5029459000
+## 424   ICE STORM  5022113500
+## 238        HAIL  3025954473
 ```
 
 And we can see the top five severe weather events ordered by cost of crop damage above.
@@ -297,11 +292,11 @@ And we can see the top five severe weather events ordered by cost of crop damage
 
 ```
 ##                evtype     totaldmg
-## 170             FLOOD 150319678257
-## 411 HURRICANE/TYPHOON  71913712800
-## 834           TORNADO  57362333946
-## 670       STORM SURGE  43323541000
-## 244              HAIL  18761221986
+## 164             FLOOD 150319678257
+## 406 HURRICANE/TYPHOON  71913712800
+## 830           TORNADO  57362333946
+## 666       STORM SURGE  43323541000
+## 238              HAIL  18761221986
 ```
 
 And we can see the top five severe weather events ordered by cost of total damage above. Next we plot all of the above.
@@ -369,11 +364,16 @@ $13,972,566,000
 ```
 
 ```
-## R version 3.1.1 (2014-07-10)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## R version 3.1.2 (2014-10-31)
+## Platform: x86_64-pc-linux-gnu (64-bit)
 ## 
 ## locale:
-## [1] en_IE.UTF-8/en_IE.UTF-8/en_IE.UTF-8/C/en_IE.UTF-8/en_IE.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -384,7 +384,7 @@ $13,972,566,000
 ## loaded via a namespace (and not attached):
 ##  [1] codetools_0.2-9  digest_0.6.4     evaluate_0.5.5   formatR_1.0     
 ##  [5] htmltools_0.2.6  knitr_1.7        plyr_1.8.1       Rcpp_0.11.2     
-##  [9] rmarkdown_0.3.12 stringr_0.6.2    tools_3.1.1      yaml_2.1.13
+##  [9] rmarkdown_0.3.10 stringr_0.6.2    tools_3.1.2      yaml_2.1.11
 ```
 
 

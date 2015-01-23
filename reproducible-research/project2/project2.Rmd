@@ -7,8 +7,8 @@ output:
   pdf_document: null
 ---
 
-## Synopsis
 
+## Synopsis
 
 In this project we will perform a basic analysis of the effect of severe weather events, 
 in both the public health and economic senses, on the community. For our analysis we will 

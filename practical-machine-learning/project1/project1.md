@@ -91,8 +91,11 @@ Now we can split the training data into two sets - for training and cross valida
 
 Now we go straight into building our model - I choose to use a random forest due to 
 the number of predictors, with classe as the outcome, and everything else as 
-predictors. Note: in truth we don't need to perform cross validation as the random 
-forest will do this internally - I do so only see how well the model performs:
+predictors. 
+
+Note: in truth we don't need to perform cross validation as the random forest does 
+this internally - we do so only see how well the model performs in terms of 
+estimating out of sample error - anything less than 1% is acceptable:
 
 
 ```r
@@ -202,7 +205,8 @@ predictions of the cross validation set:
 we see an accuracy of 
 99.82%. 
 From this we can estimate the out of sample error to be 
-0.1784%. 
+0.1784% 
+which is well within the 1% we set for ourselves. 
 
 
 ## The Testing

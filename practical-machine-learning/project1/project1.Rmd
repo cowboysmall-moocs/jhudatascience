@@ -1,0 +1,202 @@
+---
+title: "Predicting The Manner Of Exercise"
+author: "Jerry Kiely"
+date: "22 January 2015"
+output:
+  html_document:
+    keep_md: yes
+    theme: cerulean
+  pdf_document: null
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+    set.seed(12345);
+
+    answers <- c('B', 'A', 'B', 'A', 'A', 'E', 'D', 'B', 'A', 'A', 'B', 'C', 'B', 'A', 'E', 'E', 'A', 'B', 'B', 'B');
+
+    library(lattice);
+    library(ggplot2);
+    library(caret, warn.conflicts = FALSE, quietly = TRUE);
+
+    write_files = function(x) {
+
+        n = length(x)
+        for(i in 1:n) {
+
+            filename = paste0("./results/problem_id_", i, ".txt");
+            write.table(x[i], file = filename, quote = FALSE, row.names = FALSE, col.names = FALSE);
+        }
+    }
+
+```
+
+
+## The Introduction
+
+This project looks at a HAR dataset:
+
+> Human Activity Recognition - HAR - has emerged as a key research area in the last years 
+> and is gaining increasing attention by the pervasive computing research community, 
+> especially for the development of context-aware systems.
+
+From the project brief:
+
+> Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect 
+> a large amount of data about personal activity relatively inexpensively. These type of 
+> devices are part of the quantified self movement – a group of enthusiasts who take 
+> measurements about themselves regularly to improve their health, to find patterns in their 
+> behavior, or because they are tech geeks. 
+
+Relating to the current task:
+
+> One thing that people regularly do is quantify how much of a particular activity they do, 
+> but they rarely quantify how well they do it. In this project, your goal will be to use 
+> data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They 
+> were asked to perform barbell lifts correctly and incorrectly in 5 different ways.  
+
+We will attempt to predict the manner in which participants performed barbell lifts. We 
+will do this by training a classifier with the provided dataset.
+
+
+## The Data
+
+First we load the data:
+
+```{r}
+
+    train <- read.csv('pml-training.csv', na.strings = c('NA', ''));
+    test  <- read.csv('pml-testing.csv',  na.strings = c('NA', ''));
+
+```
+
+Next we clean the data by removing any columns that contain null data:
+
+```{r}
+
+    nas   <- colSums(is.na(train)) > 0;
+
+    names <- colnames(train);
+    cols  <- names[!nas];
+    train <- train[, cols];
+
+    names <- colnames(test);
+    cols  <- names[!nas];
+    test  <- test[, cols];
+
+```
+
+Next we remove columns for predictors with nearly zero variance - i.e. columns that are 
+almost constant and which are unlikely to affect the outcome:
+
+```{r}
+
+    zvs   <- nearZeroVar(train);
+
+    train <- train[, -zvs];
+    test  <- test[, -zvs];
+
+```
+
+Then we ommit the first five columns (which contain index, user, and timestamp 
+information):
+
+```{r}
+
+    train <- train[, 6:ncol(train)];
+    test  <- test[, 6:ncol(test)];
+
+```
+
+Now we can split the training data into two sets - for training and cross validation:
+
+```{r}
+
+    partition <- createDataPartition(y = train$classe, p = 0.8, list = FALSE);
+    part_tr   <- train[partition, ];
+    part_cv   <- train[-partition, ];
+
+```
+
+
+## The Training
+
+Now we go straight into building our model - I choose to use a random forest due to 
+the number of predictors, with classe as the outcome, and everything else as 
+predictors. Note: in truth we don't need to perform cross validation as the random 
+forest will do this internally - I do so only see how well the model performs:
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+
+    model <- train(
+        classe ~ ., 
+        method = 'rf', 
+        data = part_tr, 
+        trControl = trainControl(method = 'oob', number = 4)
+    );
+
+```
+
+Now we look at how the model fares against the training data, and the cross validation 
+data:
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+
+    predict_tr <- predict(model, part_tr);
+    cm_tr      <- confusionMatrix(predict_tr, part_tr$classe);
+
+    predict_cv <- predict(model, part_cv);
+    cm_cv      <- confusionMatrix(predict_cv, part_cv$classe);
+
+```
+
+Looking at the confusion matrix for the predictions of the training set:
+
+```{r}
+
+    cm_tr;
+
+```
+
+we see an accuracy of 100%, as expected. Looking at the confusion matrix for the 
+predictions of the cross validation set:
+
+```{r}
+
+    cm_cv;
+
+```
+
+we see an accuracy of 
+`r format((max(model$results$Accuracy)) * 100, digits = 4, scientific = FALSE)`%. 
+From this we can estimate the out of sample error to be 
+`r format((1 - max(model$results$Accuracy)) * 100, digits = 4, scientific = FALSE)`%. 
+
+
+## The Testing
+
+Now lets run our model against the test set and see how it fares:
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+
+    predict_te <- predict(model, test);
+    cm_te      <- confusionMatrix(predict_te, answers);
+
+```
+
+Looking at the confusion matrix for the predictions of the test set against the 
+correct outcomes:
+
+```{r}
+
+    cm_te;
+
+```
+
+we see our model has performed with 100% accuracy.
+
+```{r, echo=FALSE}
+
+    write_files(predict_te);
+
+```

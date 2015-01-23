@@ -225,9 +225,9 @@ we see our model has performed with 100% accuracy.
 
 ## The Conclusion
 
-The first model I tried was random forest because it seemed like the best fit for the data, 
+The first model we tried was random forest because it seemed like the best fit for the data, 
 and it performed perfectly - submitted results were 100% correct first time. With some tuning 
-the algorithm itself ran pretty quickly, but without losing accuracy.
+the algorithm itself ran pretty quickly, but without sacrificing accuracy.
 
 
 ## The Citation:

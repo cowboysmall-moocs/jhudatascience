@@ -73,6 +73,15 @@ information):
 
 
 ```r
+    names[1:5];
+```
+
+```
+## [1] "X"                    "user_name"            "raw_timestamp_part_1"
+## [4] "raw_timestamp_part_2" "cvtd_timestamp"
+```
+
+```r
     train <- train[, 6:ncol(train)];
     test  <- test[, 6:ncol(test)];
 ```
@@ -95,7 +104,7 @@ predictors.
 
 Note: in truth we don't need to perform cross validation as the random forest does 
 this internally - we do so only see how well the model performs in terms of 
-estimating out of sample error - anything less than 1% is acceptable:
+estimating out of sample error - anything less than 1% should be acceptable:
 
 
 ```r
@@ -107,8 +116,44 @@ estimating out of sample error - anything less than 1% is acceptable:
     );
 ```
 
-Now we look at how the model fares against the training data, and the cross validation 
-data:
+Lets have a look at our model:
+
+
+```r
+    model;
+```
+
+```
+## Random Forest 
+## 
+## 15699 samples
+##    53 predictor
+##     5 classes: 'A', 'B', 'C', 'D', 'E' 
+## 
+## No pre-processing
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy   Kappa    
+##    2    0.9962418  0.9952461
+##   27    0.9982164  0.9977440
+##   53    0.9963055  0.9953268
+## 
+## Accuracy was used to select the optimal model using  the largest value.
+## The final value used for the model was mtry = 27.
+```
+
+Lets plot the error of the model versus number of trees:
+
+
+```r
+    plot(model$finalModel, main = 'Error versus Trees');
+```
+
+![](project1_files/figure-html/unnamed-chunk-9-1.png) 
+
+Clearly the error reduces sharply as the number of trees incresese, until around 50 
+trees, and then not significantly. Now we look at how the model fares against the 
+training data, and the cross validation data:
 
 
 ```r
@@ -203,10 +248,14 @@ predictions of the cross validation set:
 ```
 
 we see an accuracy of 
-99.82%. 
+99.82% 
+and a kappa score of 
+99.77%. . 
 From this we can estimate the out of sample error to be 
 0.1784% 
-which is well within the 1% we set for ourselves. 
+using the accuracy measure, or 
+0.2256% 
+using the kappa score, both of which are well within the 1% we set for ourselves. 
 
 
 ## The Testing
@@ -262,5 +311,23 @@ correct outcomes:
 ```
 
 we see our model has performed with 100% accuracy.
+
+
+## The Conclusion
+
+The first model I tried was random forest because it seemed like the best fit for the data, 
+and it performed perfectly - submitted results were 100% correct first time. With some tuning 
+the algorithm itself ran pretty quickly, but without losing accuracy.
+
+
+## The Citation:
+
+Ugulino, W.; Cardador, D.; Vega, K.; Velloso, E.; Milidiu, R.; Fuks, H. Wearable Computing: 
+Accelerometers' Data Classification of Body Postures and Movements. Proceedings of 21st 
+Brazilian Symposium on Artificial Intelligence. Advances in Artificial Intelligence - SBIA 
+2012. In: Lecture Notes in Computer Science. , pp. 52-61. Curitiba, PR: Springer Berlin / 
+Heidelberg, 2012. ISBN 978-3-642-34458-9. DOI: 10.1007/978-3-642-34459-6_6. 
+
+Persistent URL: http://groupware.les.inf.puc-rio.br/har
 
 

@@ -103,6 +103,8 @@ information):
 
 ```{r}
 
+    names[1:5];
+
     train <- train[, 6:ncol(train)];
     test  <- test[, 6:ncol(test)];
 
@@ -127,7 +129,7 @@ predictors.
 
 Note: in truth we don't need to perform cross validation as the random forest does 
 this internally - we do so only see how well the model performs in terms of 
-estimating out of sample error - anything less than 1% is acceptable:
+estimating out of sample error - anything less than 1% should be acceptable:
 
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
 
@@ -140,8 +142,25 @@ estimating out of sample error - anything less than 1% is acceptable:
 
 ```
 
-Now we look at how the model fares against the training data, and the cross validation 
-data:
+Lets have a look at our model:
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+
+    model;
+
+```
+
+Lets plot the error of the model versus number of trees:
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE}
+
+    plot(model$finalModel, main = 'Error versus Trees');
+
+```
+
+Clearly the error reduces sharply as the number of trees incresese, until around 50 
+trees, and then not significantly. Now we look at how the model fares against the 
+training data, and the cross validation data:
 
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
 
@@ -171,10 +190,14 @@ predictions of the cross validation set:
 ```
 
 we see an accuracy of 
-`r format((max(model$results$Accuracy)) * 100, digits = 4, scientific = FALSE)`%. 
+`r format((max(model$results$Accuracy)) * 100, digits = 4, scientific = FALSE)`% 
+and a kappa score of 
+`r format((max(model$results$Kappa)) * 100, digits = 4, scientific = FALSE)`%. . 
 From this we can estimate the out of sample error to be 
 `r format((1 - max(model$results$Accuracy)) * 100, digits = 4, scientific = FALSE)`% 
-which is well within the 1% we set for ourselves. 
+using the accuracy measure, or 
+`r format((1 - max(model$results$Kappa)) * 100, digits = 4, scientific = FALSE)`% 
+using the kappa score, both of which are well within the 1% we set for ourselves. 
 
 
 ## The Testing
@@ -198,6 +221,24 @@ correct outcomes:
 ```
 
 we see our model has performed with 100% accuracy.
+
+
+## The Conclusion
+
+The first model I tried was random forest because it seemed like the best fit for the data, 
+and it performed perfectly - submitted results were 100% correct first time. With some tuning 
+the algorithm itself ran pretty quickly, but without losing accuracy.
+
+
+## The Citation:
+
+Ugulino, W.; Cardador, D.; Vega, K.; Velloso, E.; Milidiu, R.; Fuks, H. Wearable Computing: 
+Accelerometers' Data Classification of Body Postures and Movements. Proceedings of 21st 
+Brazilian Symposium on Artificial Intelligence. Advances in Artificial Intelligence - SBIA 
+2012. In: Lecture Notes in Computer Science. , pp. 52-61. Curitiba, PR: Springer Berlin / 
+Heidelberg, 2012. ISBN 978-3-642-34458-9. DOI: 10.1007/978-3-642-34459-6_6. 
+
+Persistent URL: http://groupware.les.inf.puc-rio.br/har
 
 ```{r, echo=FALSE}
 

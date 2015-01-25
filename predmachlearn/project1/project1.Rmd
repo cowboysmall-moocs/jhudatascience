@@ -129,7 +129,7 @@ predictors.
 
 Note: in truth we don't need to perform cross validation as the random forest does 
 this internally - we do so only see how well the model performs in terms of 
-estimating out of sample error - anything less than 1% should be acceptable:
+estimating out of sample error - anything less than 5% (1 in 20) should be acceptable:
 
 ```{r, cache=TRUE, warning=FALSE, message=FALSE}
 
@@ -197,7 +197,7 @@ From this we can estimate the out of sample error to be
 `r format((1 - max(model$results$Accuracy)) * 100, digits = 4, scientific = FALSE)`% 
 using the accuracy measure, or 
 `r format((1 - max(model$results$Kappa)) * 100, digits = 4, scientific = FALSE)`% 
-using the kappa score, both of which are well within the 1% we set for ourselves. 
+using the kappa score, both of which are well within the 5% we set for ourselves. 
 
 
 ## The Testing
@@ -242,6 +242,6 @@ Persistent URL: http://groupware.les.inf.puc-rio.br/har
 
 ```{r, echo=FALSE}
 
-    write_files(predict_te);
+    #write_files(predict_te);
 
 ```

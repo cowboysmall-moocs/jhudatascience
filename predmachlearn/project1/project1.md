@@ -104,7 +104,7 @@ predictors.
 
 Note: in truth we don't need to perform cross validation as the random forest does 
 this internally - we do so only see how well the model performs in terms of 
-estimating out of sample error - anything less than 1% should be acceptable:
+estimating out of sample error - anything less than 5% (1 in 20) should be acceptable:
 
 
 ```r
@@ -255,7 +255,7 @@ From this we can estimate the out of sample error to be
 0.1784% 
 using the accuracy measure, or 
 0.2256% 
-using the kappa score, both of which are well within the 1% we set for ourselves. 
+using the kappa score, both of which are well within the 5% we set for ourselves. 
 
 
 ## The Testing

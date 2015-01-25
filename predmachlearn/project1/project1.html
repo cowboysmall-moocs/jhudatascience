@@ -109,7 +109,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <div id="the-training" class="section level2">
 <h2>The Training</h2>
 <p>Now we go straight into building our model - I choose to use a random forest due to the number of predictors, with classe as the outcome, and everything else as predictors.</p>
-<p>Note: in truth we don’t need to perform cross validation as the random forest does this internally - we do so only see how well the model performs in terms of estimating out of sample error - anything less than 1% should be acceptable:</p>
+<p>Note: in truth we don’t need to perform cross validation as the random forest does this internally - we do so only see how well the model performs in terms of estimating out of sample error - anything less than 5% (1 in 20) should be acceptable:</p>
 <pre class="r"><code>    model &lt;- train(
         classe ~ ., 
         method = 'rf', 
@@ -209,7 +209,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 ## Detection Rate         0.2845   0.1932   0.1733   0.1637   0.1835
 ## Detection Prevalence   0.2847   0.1942   0.1736   0.1639   0.1835
 ## Balanced Accuracy      0.9998   0.9987   0.9969   0.9991   0.9993</code></pre>
-<p>we see an accuracy of 99.82% and a kappa score of 99.77%. . From this we can estimate the out of sample error to be 0.1784% using the accuracy measure, or 0.2256% using the kappa score, both of which are well within the 1% we set for ourselves.</p>
+<p>we see an accuracy of 99.82% and a kappa score of 99.77%. . From this we can estimate the out of sample error to be 0.1784% using the accuracy measure, or 0.2256% using the kappa score, both of which are well within the 5% we set for ourselves.</p>
 </div>
 <div id="the-testing" class="section level2">
 <h2>The Testing</h2>

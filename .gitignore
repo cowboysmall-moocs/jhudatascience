@@ -9,4 +9,9 @@
 **/*.bz2
 
 **/*cache
+**/.cache
 **/*files
+
+**/shinyapps
+**/libraries
+**/assets

@@ -1,0 +1,285 @@
+---
+title: "Titanic Analysis"
+author: "Jerry Kiely"
+date: "14 February 2015"
+output:
+  pdf_document: null
+  html_document:
+    keep_md: yes
+    theme: cerulean
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+    set.seed(1337);
+
+    library(lattice,      warn.conflicts = FALSE, quietly = TRUE);
+    library(ggplot2,      warn.conflicts = FALSE, quietly = TRUE);
+
+    library(plyr,         warn.conflicts = FALSE, quietly = TRUE);
+
+    library(survival,     warn.conflicts = FALSE, quietly = TRUE);
+    library(splines,      warn.conflicts = FALSE, quietly = TRUE);
+    library(parallel,     warn.conflicts = FALSE, quietly = TRUE);
+    library(stabs,        warn.conflicts = FALSE, quietly = TRUE);
+
+    library(randomForest, warn.conflicts = FALSE, quietly = TRUE);
+    library(gbm,          warn.conflicts = FALSE, quietly = TRUE);
+    library(mboost,       warn.conflicts = FALSE, quietly = TRUE);
+    library(caret,        warn.conflicts = FALSE, quietly = TRUE);
+
+    source('titanic.R', local = TRUE);
+
+```
+
+
+## The Introduction
+
+Load the cleaned data:
+
+```{r}
+
+    train <- load_training_data();
+    test  <- load_testing_data();
+
+    str(train);
+
+```
+
+##The Analysis
+
+Partition the data into training and cross validation:
+
+```{r}
+
+    partition <- createDataPartition(y = train$Survived, p = 0.75, list = FALSE);
+    part_tr   <- train[ partition, ];
+    part_cv   <- train[-partition, ];
+
+```
+
+Train the Random Forest model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    model1 <- train(
+        Survived ~ ., 
+        method     = 'rf', 
+        data       = part_tr,
+        importance = TRUE,
+        trControl  = trainControl(method = 'oob', number = 4)
+    );
+
+```
+
+Now train the glm model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    model2 <- train(
+        Survived ~ ., 
+        method     = 'glm', 
+        data       = part_tr,
+        family     = binomial
+    );
+
+```
+
+Now train the gbm model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    model3 <- train(
+        Survived ~ ., 
+        method     = 'gbm', 
+        data       = part_tr, 
+        verbose    = FALSE
+    );
+
+```
+
+Look at the importance of the various features / variables of the Random Forest model:
+
+```{r, warning=FALSE, message=FALSE}
+ 
+     importance1 <- varImp(model1);
+ 
+     importance1;
+     plot(importance1);
+ 
+```
+
+Look at the importance of the various features / variables of the glm model:
+
+```{r, warning=FALSE, message=FALSE}
+ 
+     importance2 <- varImp(model2);
+ 
+     importance2;
+     plot(importance2);
+ 
+```
+
+Look at the importance of the various features / variables of the gbm model:
+
+```{r, warning=FALSE, message=FALSE}
+ 
+     importance3 <- varImp(model3);
+ 
+     importance3;
+     plot(importance3);
+ 
+```
+
+Look at the final model of the Random Forest:
+
+```{r, warning=FALSE, message=FALSE}
+
+    model1;
+    model1$finalModel
+
+```
+
+Look at the final model of the glm:
+
+```{r, warning=FALSE, message=FALSE}
+
+    model2;
+    model2$finalModel
+
+```
+
+Look at the final model of the gbm:
+
+```{r, warning=FALSE, message=FALSE}
+
+    model3;
+    model3$finalModel
+
+```
+
+Predict with the training set using the Random Forest model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    predict1_tr <- predict(model1, part_tr);
+    cm_tr       <- confusionMatrix(predict1_tr, part_tr$Survived);
+    cm_tr;
+
+```
+
+Predict with the cross validation set using the Random Forest model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    predict1_cv <- predict(model1, part_cv);
+    cm_cv       <- confusionMatrix(predict1_cv, part_cv$Survived);
+    cm_cv;
+
+```
+
+Predict with the training set using the glm model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    predict2_tr <- predict(model2, part_tr);
+    cm_tr       <- confusionMatrix(predict2_tr, part_tr$Survived);
+    cm_tr;
+
+```
+
+Predict with the cross validation set using the glm model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    predict2_cv <- predict(model2, part_cv);
+    cm_cv       <- confusionMatrix(predict2_cv, part_cv$Survived);
+    cm_cv;
+
+```
+
+Predict with the training set using the gbm model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    predict3_tr <- predict(model3, part_tr);
+    cm_tr       <- confusionMatrix(predict3_tr, part_tr$Survived);
+    cm_tr;
+
+```
+
+Predict with the cross validation set using the gbm model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    predict3_cv <- predict(model3, part_cv);
+    cm_cv       <- confusionMatrix(predict3_cv, part_cv$Survived);
+    cm_cv;
+
+```
+
+Fit a model that includes all predictors:
+
+```{r, warning=FALSE, message=FALSE}
+
+    pred_tr <- data.frame(
+        prediction1 = predict1_tr, 
+        prediction2 = predict2_tr, 
+        prediction3 = predict3_tr, 
+        Survived    = part_tr$Survived
+    );
+
+    pred_cv <- data.frame(
+        prediction1 = predict1_cv, 
+        prediction2 = predict2_cv, 
+        prediction3 = predict3_cv
+    );
+
+    comb_model  <- train(
+        Survived ~ ., 
+        method = 'gamboost', 
+        data   = pred_tr
+    );
+
+```
+
+Look at the importance of the various features / variables of the combined model:
+
+```{r, warning=FALSE, message=FALSE}
+ 
+     importance4 <- varImp(comb_model);
+ 
+     importance4;
+     plot(importance4);
+
+```
+
+Look at the final model of the combined model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    comb_model;
+
+```
+
+Predict with the training set using the combined model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    predict4_tr <- predict(comb_model, pred_tr);
+    cm_tr       <- confusionMatrix(predict4_tr, part_tr$Survived);
+    cm_tr;
+
+```
+
+Predict with the cross validation set using the combined model:
+
+```{r, warning=FALSE, message=FALSE}
+
+    predict4_cv <- predict(comb_model, pred_cv);
+    cm_cv       <- confusionMatrix(predict4_cv, part_cv$Survived);
+    cm_cv;
+
+```
+
+

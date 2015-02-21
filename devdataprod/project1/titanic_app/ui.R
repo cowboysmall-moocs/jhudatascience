@@ -56,21 +56,37 @@ shinyUI(
                     ), 
                     tabPanel(
                         'Documentation', 
+                        h3('Howto'),
+                        p('In the left sidebar you select values that reflect a particular profile:'),
+                        tags$div(
+                            tags$ol(
+                                tags$li('Travelling From : port of embarkation'),
+                                tags$li('Travelling Class : first, second, or third'),
+                                tags$li('Gender : male or female'),
+                                tags$li('Title : honorific'),
+                                tags$li('Age : how many years spent on the planet'),
+                                tags$li('Family Size : mother father sister brother')
+                            )
+                        ),
+                        p('the outcome will update automatically based on your selection and tell you ', 
+                            'whether you survived or perished'),
+                        br(),
                         h3('Data'),
-                        p('the data was liberated from ', 
+                        p('The data was liberated from ', 
                             a('Kaggle', href = 'https://www.kaggle.com/c/titanic-gettingStarted/data'),
                             '. Analysis was performed and only the most influential features were retained.',
                             ' Also, a number of derived features were added.'
                         ),
+                        img(src = 'importance.png', height = 300),
                         br(),
                         p('The data in searchable format is included below:'),
                         dataTableOutput('TitanicTable'),
                         h3('Algorithm'),
-                        p('after trying a number of different classifiers (see analysis document in the ',
+                        p('After trying a number of different classifiers (see analysis document in the ',
                             'repository) I settled on Random Forest, which was the best performing classifier. '
                         ),
                         h3('Code'),
-                        p('all code can be viewed below, or alternatively on ',
+                        p('All code can be viewed below, or alternatively on ',
                             a('GitHub', href = 'https://github.com/cowboysmall/jhudatascience/tree/master/devdataprod/project1')
                         )
                     ), 

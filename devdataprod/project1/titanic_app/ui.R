@@ -71,7 +71,7 @@ shinyUI(
                         ),
                         h3('Code'),
                         p('all code can be viewed below, or alternatively on ',
-                            a('GitHub', href = 'https://github.com/cowboysmall/jhudatascience')
+                            a('GitHub', href = 'https://github.com/cowboysmall/jhudatascience/tree/master/devdataprod/project1')
                         )
                     ), 
                     tabPanel(

@@ -24,6 +24,6 @@ the slidify presentation is located [here](https://cowboysmall.github.io/pages/d
 and [here](http://rpubs.com/cowboysmall/62980).
 
 __NOTE:__ the location of the presentation on RPubs has changed - there was a conflict problem 
-between the slidify deployment and the RStudio which resulted in the presentation being deleted. 
-I re-deployed it, but it was to a different url, so the link above is up-to-date. Sorry for the 
+between the slidify deployment and RStudio which resulted in the presentation being deleted. I 
+re-deployed it, but it was to a different url, so the link above is up-to-date. Sorry for the 
 inconvenience.

@@ -3,7 +3,7 @@ Developing Data Products Project
 
 ## Introduction
 
-within the project directory there are three sub-directories relating to the project:
+here you will find three sub-directories relating to the project:
 
 * titanic_analysis - where the exploratory analysis and model fitting is documented
 * titanic_app - where the files relating to the shiny app are located

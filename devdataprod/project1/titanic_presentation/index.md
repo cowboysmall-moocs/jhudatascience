@@ -81,8 +81,7 @@ This is what the application looks like:
 ![Screenshot](./images/screenshot.png)
 
 The user selects different values for the different features, creating a profile of a person, 
-then presses the 'Make Prediction' button once complete, and then sees whether or not the 
-person would have survived.
+and then sees whether or not the person would have survived.
 
 And that's the application. I hope you enjoy playing with it.
 
